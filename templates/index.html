@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naolib – Itinéraire à pied</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/naolib_theme.css') }}">
+</head>
+
+<body>
+    <div id="loading-screen" class="hidden">
+        <img src="{{ url_for('static', filename='assets/logo_naolib.png') }}" alt="Chargement Naolib" class="pulse-logo">
+    </div>
+
+    <aside id="panel">
+        <header class="panel-header">
+            <div class="brand">
+                <img src="{{ url_for('static', filename='assets/logo_vert_nao.png') }}" alt="Naolib" class="header-logo">
+            </div>
+            <nav class="tabs" role="tablist">
+                <button type="button" class="tab active" role="tab" aria-selected="true">Itinéraire</button>
+            </nav>
+        </header>
+
+        <section class="panel-body">
+            <div class="modes">
+                <span class="mode active" title="Itinéraire piéton">&#128694; À pied</span>
+            </div>
+
+            <form id="routeForm" class="places" autocomplete="off">
+                <div class="place-field">
+                    <span class="dot dot-start"></span>
+                    <input type="text" id="startAddress" placeholder="Départ" aria-label="Départ">
+                    <button type="button" class="icon-btn" id="locateBtn" title="Utiliser ma position">&#9678;</button>
+                    <ul class="suggestions" id="startSuggestions" role="listbox" hidden></ul>
+                </div>
+                
+                <div class="place-field">
+                    <span class="dot dot-end"></span>
+                    <input type="text" id="endAddress" placeholder="Arrivée" aria-label="Arrivée">
+                    <ul class="suggestions" id="endSuggestions" role="listbox" hidden></ul>
+                </div>
+                
+                <button type="button" class="swap-btn" id="swapBtn" title="Inverser départ et arrivée">&#8645;</button>
+
+                <div class="options">
+                    <label for="departTime">Départ à</label>
+                    <input type="time" id="departTime">
+                    
+                    <!-- NOUVELLE CASE À COCHER PMR -->
+                    <div style="grid-column: 1 / -1; margin-top: 8px; margin-bottom: 8px;">
+                        <label class="pretty-checkbox">
+                            <input type="checkbox" id="pmrCheck">
+                            <span class="checkmark"></span>
+                            <span class="text">♿ 🚼 PMR / Poussette</span>
+                        </label>
+                    </div>
+                    
+                    <div id="dayOptions" style="display: contents;">
+                        <label for="detourSelect">Détour</label>
+                        <select id="detourSelect">
+                            <option value="0">Le plus direct (+ 0 min)</option>
+                            <option value="5">Petit détour (+ 5 min)</option>
+                            <option value="10">Exploration (+ 10 min)</option>
+                            <option value="12">Grande balade (+ 12 min)</option>
+                        </select>
+                        
+                        <div class="interests">
+                            <label class="check"><input type="checkbox" id="natureCheck" checked> Nature</label>
+                            <label class="check"><input type="checkbox" id="cultureCheck"> Culture</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="nightMessage" style="display: none; font-size: 13px; color: #FF8C12; font-weight: 600; margin-top: 12px; text-align: center;">
+                    🌙 Mode Sécurité activé (Grands axes privilégiés, détours désactivés).
+                </div>
+
+                <button type="submit" class="primary-btn">Rechercher</button>
+            </form>
+
+            <p id="status" role="status"></p>
+            <div id="results"></div>
+        </section>
+    </aside>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='js/map_logic.js') }}"></script>
+</body>
+
+</html>
